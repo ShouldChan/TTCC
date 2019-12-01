@@ -1,15 +1,26 @@
 # coding:utf-8
 import numpy as np
 
+'''
+给定一个100*100的01矩阵，1的个数在1-100之间，你需要把所有1排成一条直线，
+矩阵元素只能上下左右互相置换，直线只能是横线、竖线、向上45度斜线、向下45度斜线四种类型，
+给出你的具体置换步骤。
+
+'''
 
 # mtx_list_1 = [[0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0], [1, 0, 0, 0]]
 # mtx_list_2 = [[0, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [1, 0, 0, 0]]
 
-# matrix=np.array(mtx_list_1)
+filename='./双塔奇兵/matrix1000.txt'
+matrix_list = []
+with open(filename, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if line is not None:
+            matrix_list.append(line.strip().split(' '))
 
 
-import numpy as np
-
+matrix=np.array(matrix_list).astype(np.int32)
 
 class Hiker:
             
@@ -40,8 +51,8 @@ class Hiker:
         min_loc=loc_dict[min_idx].tolist()
         # print(min_loc)
         # 获取中心下标，并对到他的距离的点进行排序
-        print(dist_of_1)
-        print(min_idx)
+        # print(dist_of_1)
+        # print(min_idx)
         # 对最小值所在的下标的那列进行排序
         sorted_idx_ndarr=np.argsort(dist_of_1[min_idx])
         # print("sorted_idx_ndarr:",type(sorted_idx_ndarr))
@@ -50,7 +61,7 @@ class Hiker:
     def center_extend_vertical(self,mtx_arr,min_of_dist,min_loc,sorted_idx_ndarr,loc_dict,min_idx,num_of_1,N):
         print("进入垂直方向中心扩展算法：")
         move_actions_vertical=[]
-        step_dict={}
+        # step_dict={}
         # print("min_loc:",min_loc)
         # print(min_loc[0],min_loc[1])
         sum_steps=0
@@ -76,11 +87,12 @@ class Hiker:
                     down_point+=1
                     flag_list[down_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, down_point, min_loc[1]))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=down_point
-                    step_dict['col_to']=min_loc[1]
-                    move_actions_vertical.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=down_point
+                    tmp_dict['col_to']=min_loc[1]
+                    move_actions_vertical.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-down_point)+abs(current_y-min_loc[1]))
                 # 如果上方没满，就继续往上走
@@ -88,11 +100,12 @@ class Hiker:
                     up_point-=1
                     flag_list[up_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, min_loc[1]))  
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=up_point
-                    step_dict['col_to']=min_loc[1]
-                    move_actions_vertical.append(step_dict) 
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=up_point
+                    tmp_dict['col_to']=min_loc[1]
+                    move_actions_vertical.append(tmp_dict) 
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-up_point)+abs(current_y-min_loc[1]))        
             # 如果坐标在中心点下方，就往下走
@@ -103,11 +116,12 @@ class Hiker:
                     up_point-=1
                     flag_list[up_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, min_loc[1]))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=up_point
-                    step_dict['col_to']=min_loc[1]
-                    move_actions_vertical.append(step_dict) 
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=up_point
+                    tmp_dict['col_to']=min_loc[1]
+                    move_actions_vertical.append(tmp_dict) 
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-up_point)+abs(current_y-min_loc[1]))
                 # 如果下方没满，就往继续往下走
@@ -115,21 +129,25 @@ class Hiker:
                     down_point+=1
                     flag_list[down_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, down_point, min_loc[1]))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=down_point
-                    step_dict['col_to']=min_loc[1]
-                    move_actions_vertical.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=down_point
+                    tmp_dict['col_to']=min_loc[1]
+                    move_actions_vertical.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-down_point)+abs(current_y-min_loc[1]))
 
         print("sum_steps:%d"%sum_steps)
+        # print("-------------")
+        # print(move_actions_vertical)
+        # print("-------------")
         return sum_steps,move_actions_vertical
 
     def center_extend_level(self,mtx_arr,min_of_dist,min_loc,sorted_idx_ndarr,loc_dict,min_idx,num_of_1,N):
         print("进入水平方向中心扩展算法：")
         move_actions_level=[]
-        step_dict={}
+        # step_dict={}
         # print("min_loc:",min_loc)
         # print(min_loc[0],min_loc[1])
         sum_steps=0
@@ -148,17 +166,18 @@ class Hiker:
             # print(current_x,current_y)
             # 如果坐标在中心点左边，就往左走
             if current_y<=min_loc[1]:
-                print("left_point:%d"%left_point)
+                # print("left_point:%d"%left_point)
                 # 如果左边满了，就往右走
                 if left_point-1<0:  #left_point永远指向的flag_list为1
                     right_point+=1
                     flag_list[right_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, min_loc[0], right_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=min_loc[0]
-                    step_dict['col_to']=right_point
-                    move_actions_level.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=min_loc[0]
+                    tmp_dict['col_to']=right_point
+                    move_actions_level.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-min_loc[0])+abs(current_y-right_point))
                 # 如果上方没满，就继续往上走
@@ -166,11 +185,12 @@ class Hiker:
                     left_point-=1
                     flag_list[left_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, min_loc[0], left_point)) 
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=min_loc[0]
-                    step_dict['col_to']=left_point
-                    move_actions_level.append(step_dict)  
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=min_loc[0]
+                    tmp_dict['col_to']=left_point
+                    move_actions_level.append(tmp_dict)  
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-min_loc[0])+abs(current_y-left_point))        
             # 如果坐标在中心点下方，就往下走
@@ -181,11 +201,12 @@ class Hiker:
                     left_point-=1
                     flag_list[left_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, min_loc[0], left_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=min_loc[0]
-                    step_dict['col_to']=left_point
-                    move_actions_level.append(step_dict) 
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=min_loc[0]
+                    tmp_dict['col_to']=left_point
+                    move_actions_level.append(tmp_dict) 
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-min_loc[0])+abs(current_y-left_point))
                 # 如果下方没满，就往继续往下走
@@ -193,15 +214,19 @@ class Hiker:
                     right_point+=1
                     flag_list[right_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, min_loc[0], right_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=min_loc[0]
-                    step_dict['col_to']=right_point
-                    move_actions_level.append(step_dict) 
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=min_loc[0]
+                    tmp_dict['col_to']=right_point
+                    move_actions_level.append(tmp_dict) 
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-min_loc[0])+abs(current_y-right_point))
 
         print("sum_steps:%d"%sum_steps)
+        # print("-------------")
+        # print(move_actions_level)
+        # print("-------------")
         return sum_steps,move_actions_level
 
     def center_extend_leftslash(self,mtx_arr,min_of_dist,min_loc,sorted_idx_ndarr,loc_dict,min_idx,num_of_1,N):
@@ -241,11 +266,12 @@ class Hiker:
                     down_point+=1
                     flag_list[down_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, down_point, N-1-down_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=down_point
-                    step_dict['col_to']=N-1-down_point
-                    move_actions_leftslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=down_point
+                    tmp_dict['col_to']=N-1-down_point
+                    move_actions_leftslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-down_point)+abs(current_y-(N-1-down_point)))
                 # 如果上方没满，就继续往上走
@@ -253,11 +279,12 @@ class Hiker:
                     up_point-=1
                     flag_list[up_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, N-1-up_point))   
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=up_point
-                    step_dict['col_to']=N-1-up_point
-                    move_actions_leftslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=up_point
+                    tmp_dict['col_to']=N-1-up_point
+                    move_actions_leftslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-up_point)+abs(current_y-(N-1-up_point)))        
             # 如果坐标在中心点下方，就往下走
@@ -268,11 +295,12 @@ class Hiker:
                     up_point-=1
                     flag_list[up_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, N-1-up_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=up_point
-                    step_dict['col_to']=N-1-up_point
-                    move_actions_leftslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=up_point
+                    tmp_dict['col_to']=N-1-up_point
+                    move_actions_leftslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-up_point)+abs(current_y-(N-1-up_point)))
                 # 如果下方没满，就往继续往下走
@@ -280,15 +308,19 @@ class Hiker:
                     down_point+=1
                     flag_list[down_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, down_point, N-1-down_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=down_point
-                    step_dict['col_to']=N-1-down_point
-                    move_actions_leftslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=down_point
+                    tmp_dict['col_to']=N-1-down_point
+                    move_actions_leftslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-down_point)+abs(current_y-(N-1-down_point)))
 
         print("sum_steps:%d"%sum_steps)
+        # print("-------------")
+        # print(move_actions_leftslash)
+        # print("-------------")
         return sum_steps,move_actions_leftslash
 
     def center_extend_backslash(self,mtx_arr,min_of_dist,min_loc,sorted_idx_ndarr,loc_dict,min_idx,num_of_1,N):
@@ -328,23 +360,25 @@ class Hiker:
                     down_point+=1
                     flag_list[down_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, down_point, down_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=down_point
-                    step_dict['col_to']=down_point
-                    move_actions_backslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=down_point
+                    tmp_dict['col_to']=down_point
+                    move_actions_backslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-down_point)+abs(current_y-down_point))
                 # 如果上方没满，就继续往上走
                 else:
                     up_point-=1
                     flag_list[up_point]=1
-                    print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, up_point))  
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=up_point
-                    step_dict['col_to']=up_point
-                    move_actions_backslash.append(step_dict) 
+                    print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, up_point)) 
+                    tmp_dict={} 
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=up_point
+                    tmp_dict['col_to']=up_point
+                    move_actions_backslash.append(tmp_dict) 
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-up_point)+abs(current_y-up_point))        
             # 如果坐标在中心点下方，就往下走
@@ -355,11 +389,12 @@ class Hiker:
                     up_point-=1
                     flag_list[up_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, up_point, up_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=up_point
-                    step_dict['col_to']=up_point
-                    move_actions_backslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=up_point
+                    tmp_dict['col_to']=up_point
+                    move_actions_backslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-up_point)+abs(current_y-up_point))
                 # 如果下方没满，就往继续往下走
@@ -367,15 +402,19 @@ class Hiker:
                     down_point+=1
                     flag_list[down_point]=1
                     print("从(%d,%d)移到(%d,%d)" % (current_x, current_y, down_point, down_point))
-                    step_dict['row_from']=current_x
-                    step_dict['col_from']=current_y
-                    step_dict['row_to']=down_point
-                    step_dict['col_to']=down_point
-                    move_actions_backslash.append(step_dict)
+                    tmp_dict={}
+                    tmp_dict['row_from']=current_x
+                    tmp_dict['col_from']=current_y
+                    tmp_dict['row_to']=down_point
+                    tmp_dict['col_to']=down_point
+                    move_actions_backslash.append(tmp_dict)
                     # 计算总共走的步数 
                     sum_steps+=(abs(current_x-down_point)+abs(current_y-down_point))
 
         print("sum_steps:%d"%sum_steps)
+        # print("-------------")
+        # print(move_actions_backslash)
+        # print("-------------")
         return sum_steps,move_actions_backslash
 
     def center_extend(self,mtx_arr,num_of_1,N):
@@ -390,7 +429,7 @@ class Hiker:
         result_dict[sum_steps_leftslash]=move_actions_leftslash
         result_dict[sum_steps_backslash]=move_actions_backslash
         min_steps=min(sum_steps_vertical,sum_steps_level,sum_steps_leftslash,sum_steps_backslash)
-        # print(min_steps)
+        print(min_steps)
         move_actions=result_dict[min_steps]
         # print(move_actions)
         return move_actions
@@ -418,12 +457,27 @@ class Hiker:
         """
         move_actions = []
         move_actions=self.function(matrix)
-
+        print(move_actions)
+        for i in range(len(move_actions)):
+                move_action = move_actions[i]
+                self.check_valid(move_action)
+        
         return move_actions
 
-    
+    def check_valid(self, move_action):
+        if move_action['col_from'] < 0 or move_action['col_from'] >= 100 \
+                or move_action['col_to'] < 0 or move_action['col_to'] >= 100 \
+                or move_action['row_from'] < 0 or move_action['row_from'] >= 100 \
+                or move_action['row_to'] < 0 or move_action['row_to'] >= 100:
+            raise Exception('矩阵元素坐标越界。')
 
-# if __name__ == "__main__":
-#     hiker=Hiker()
-#     hiker.draw_line(matrix)
-#     pass
+        d_row = abs(move_action['row_to'] - move_action['row_from'])
+        d_col = abs(move_action['col_to'] - move_action['col_from'])
+        print(move_action)
+        if d_row > 1 or d_col > 1 or (d_row == 1 and d_col == 1):
+            raise Exception('矩阵元素只能上下左右置换。')
+
+if __name__ == "__main__":
+    hiker=Hiker()
+    hiker.draw_line(matrix)
+    pass
